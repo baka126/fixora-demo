@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fixora-missing-config-demo
+  labels:
+    app: missing-config
+  annotations:
+    fixora.io/repo-url: "https://github.com/baka126/fixora-demo.git"
+    fixora.io/repo-path: "deployment-missing-config.yaml"
+    fixora.io/vcs-type: "github"
+    fixora.io/target-revision: "main"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: missing-config
+  template:
+    metadata:
+      labels:
+        app: missing-config
+    spec:
+      containers:
+      - name: config-consumer
+        image: busybox
+        command: ["sh", "-c", "echo Value: $REQUIRED_ENV; sleep 3600"]
+        env:
+        - name: REQUIRED_ENV
+          valueFrom:
+            secretKeyRef:
+              name: fixora-non-existent-secret
+              key: some-key

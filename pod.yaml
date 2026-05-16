@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: oom-test-4
+  name: oom-test-5
   annotations:
     fixora.io/repo-url: "https://github.com/baka126/fixora-demo.git"
     fixora.io/repo-path: "pod.yaml"

@@ -1,0 +1,26 @@
+replicaCount: 1
+
+# Fixora GitOps Annotations
+annotations:
+  fixora.io/repo-url: "https://github.com/baka126/fixora-demo.git"
+  fixora.io/repo-path: "helm-scenario/values.yaml"
+  fixora.io/vcs-type: "github"
+  fixora.io/target-revision: "main"
+
+image:
+  repository: nginx
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8080
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 16Mi
+  requests:
+    cpu: 100m
+    memory: 16Mi

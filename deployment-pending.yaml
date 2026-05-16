@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fixora-pending-demo
+  labels:
+    app: pending-demo
+  annotations:
+    fixora.io/repo-url: "https://github.com/baka126/fixora-demo.git"
+    fixora.io/repo-path: "deployment-pending.yaml"
+    fixora.io/vcs-type: "github"
+    fixora.io/target-revision: "main"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pending-demo
+  template:
+    metadata:
+      labels:
+        app: pending-demo
+    spec:
+      containers:
+      - name: greedy-container
+        image: busybox
+        command: ["sleep", "3600"]
+        resources:
+          requests:
+            cpu: "100"
+            memory: "100Gi"

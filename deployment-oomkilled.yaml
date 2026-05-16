@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fixora-oom-demo
+  labels:
+    app: oom-demo
+  annotations:
+    fixora.io/repo-url: "https://github.com/baka126/fixora-demo.git"
+    fixora.io/repo-path: "deployment-oomkilled.yaml"
+    fixora.io/vcs-type: "github"
+    fixora.io/target-revision: "main"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: oom-demo
+  template:
+    metadata:
+      labels:
+        app: oom-demo
+    spec:
+      containers:
+      - name: memory-hog
+        image: polinux/stress
+        resources:
+          limits:
+            memory: "20Mi"
+        args: ["--vm", "1", "--vm-bytes", "100M", "--vm-hang", "1"]

@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fixora-arch-mismatch-demo
+  labels:
+    app: arch-mismatch
+  annotations:
+    fixora.io/repo-url: "https://github.com/baka126/fixora-demo.git"
+    fixora.io/repo-path: "deployment-arch-mismatch.yaml"
+    fixora.io/vcs-type: "github"
+    fixora.io/target-revision: "main"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: arch-mismatch
+  template:
+    metadata:
+      labels:
+        app: arch-mismatch
+    spec:
+      containers:
+      - name: wrong-arch-container
+        image: busybox@sha256:5eef57175e60613276f575678b6630f989c74be8f7236573c00ed64d048d0859
+        command: ["sh", "-c", "echo Hello from wrong architecture; sleep 3600"]
