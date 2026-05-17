@@ -11,7 +11,7 @@ spec:
   restartPolicy: Never
   containers:
   - name: stress
-    image: polinux/stress
+    image: stefanprodan/stress
     resources:
       limits:
         memory: "100Mi"
