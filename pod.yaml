@@ -11,7 +11,7 @@ spec:
   restartPolicy: Never
   containers:
   - name: stress
-    image: polinux/stress
+    image: alexeiled/stress-ng
     resources:
       limits:
         memory: "100Mi"
