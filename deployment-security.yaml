@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-security-hardening
+  namespace: default
+  annotations:
+    fixora.io/repo-url: "https://github.com/baka126/fixora-demo.git"
+    fixora.io/repo-path: "deployment-security.yaml"
+    fixora.io/vcs-type: "github"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: security-demo
+  template:
+    metadata:
+      labels:
+        app: security-demo
+    spec:
+      containers:
+      - name: restricted-app
+        image: alpine:latest
+        command: ["sh", "-c", "echo 'writing to cache...'; mkdir -p /var/cache/app && touch /var/cache/app/data.tmp; sleep 3600"]
+        securityContext:
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 1000

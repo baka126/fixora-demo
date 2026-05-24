@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: fixora-missing-config-demo
+  name: missing-config-demo
   labels:
     app: missing-config
   annotations:

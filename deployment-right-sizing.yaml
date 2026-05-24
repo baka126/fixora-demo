@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-right-sizing
+  namespace: default
+  annotations:
+    fixora.io/repo-url: "https://github.com/baka126/fixora-demo.git"
+    fixora.io/repo-path: "deployment-right-sizing.yaml"
+    fixora.io/vcs-type: "github"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: right-sizing
+  template:
+    metadata:
+      labels:
+        app: right-sizing
+    spec:
+      containers:
+      - name: oversized-app
+        image: nginx:1.25
+        resources:
+          requests:
+            memory: "4Gi" # Far more than nginx needs
+            cpu: "1"
+          limits:
+            memory: "4Gi"

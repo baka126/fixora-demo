@@ -1,0 +1,26 @@
+replicaCount: 1
+
+# Fixora GitOps Annotations
+annotations:
+  fixora.io/repo-url: "https://github.com/baka126/fixora-demo.git"
+  fixora.io/repo-path: "helm-scenario/values.yaml" # Target the primary values file for the fix
+  fixora.io/vcs-type: "github"
+  fixora.io/target-revision: "main"
+
+image:
+  repository: nginx
+  pullPolicy: IfNotPresent
+  tag: "1.25-typo" # typo to trigger ImagePullBackoff
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 80 # mismatch with app port? 
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 16Mi
+  requests:
+    cpu: 100m
+    memory: 16Mi

@@ -1,11 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: fixora-imagepull-demo
+  name: imagepull-test
   labels:
-    app: imagepull-demo
+    app: imagepull-test
   annotations:
-    fixora.io/repo-url: "https://github.com/baka126/fixora-demo.git"
+    fixora.io/repo-url: "https://github.com/baka126/fixora-test.git"
     fixora.io/repo-path: "deployment-imagepull.yaml"
     fixora.io/vcs-type: "github"
     fixora.io/target-revision: "main"
@@ -13,11 +13,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: imagepull-demo
+      app: imagepull-test
   template:
     metadata:
       labels:
-        app: imagepull-demo
+        app: imagepull-test
     spec:
       containers:
       - name: typo-container

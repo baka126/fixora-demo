@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-dependency-fix
+  namespace: default
+  annotations:
+    fixora.io/repo-url: "https://github.com/baka126/fixora-demo.git"
+    fixora.io/repo-path: "deployment-dependency.yaml"
+    fixora.io/vcs-type: "github"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dep-demo
+  template:
+    metadata:
+      labels:
+        app: dep-demo
+    spec:
+      containers:
+      - name: backend
+        image: busybox
+        # Fails to connect to 'postgres-svc' because of wrong env
+        command: ["sh", "-c", "echo 'Connecting to database...'; nc -zv $DB_HOST $DB_PORT || (echo 'database connection refused postgres-svc'; exit 1)"]
+        env:
+        - name: DB_HOST
+          value: "wrong-host"
+        - name: DB_PORT
+          value: "1234"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-svc
+  namespace: default
+spec:
+  ports:
+  - port: 5432
+    targetPort: 5432
+  selector:
+    app: postgres # Assume a postgres pod exists or will be added
