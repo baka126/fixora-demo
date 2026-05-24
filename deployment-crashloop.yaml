@@ -1,25 +1,32 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: fixora-crashloop-demo
-  labels:
-    app: crashloop-demo
-  annotations:
-    fixora.io/repo-url: "https://github.com/baka126/fixora-demo.git"
-    fixora.io/repo-path: "deployment-crashloop.yaml"
-    fixora.io/vcs-type: "github"
-    fixora.io/target-revision: "main"
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: crashloop-demo
-  template:
-    metadata:
-      labels:
+    name: fixora-crashloop-demo
+    labels:
         app: crashloop-demo
-    spec:
-      containers:
-      - name: broken-app
-        image: busybox
-        command: ["sh", "-c", "echo Starting application...; sleep 5; echo Unexpected error occurred!; exit 1"]
+    annotations:
+        fixora.io/repo-url: "https://github.com/baka126/fixora-demo.git"
+        fixora.io/repo-path: "deployment-crashloop.yaml"
+        fixora.io/vcs-type: "github"
+        fixora.io/target-revision: "main"
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: crashloop-demo
+    template:
+        metadata:
+            labels:
+                app: crashloop-demo
+        spec:
+            containers:
+                - name: broken-app
+                  image: busybox
+                  command: ["sh", "-c", "echo Starting application...; sleep 5; echo Unexpected error occurred!; exit 1"]
+                  resources:
+                    limits:
+                        cpu: 200m
+                        memory: 256Mi
+                    requests:
+                        cpu: 100m
+                        memory: 128Mi
